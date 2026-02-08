@@ -1,0 +1,94 @@
+TerraSeg: Rugged Terrain Segmentation
+Build models to predict pixel-level grayscale terrain masks from off-road images, evaluated via binary segmentation.Semantic segmentation enables machines to understand complex and unstructured environments by labeling regions of an image at the pixel level. While many computer vision benchmarks focus on structured, road-based scenes, real-world applications such as off-road navigation and robotics require models that can operate reliably in rugged terrain.
+
+In this competition, participants are provided with RGB images captured in off-road environments along with corresponding grayscale ground truth masks for training. These grayscale masks indicate terrain of interest versus background and should be converted into a binary form during training and submission. Participants are required to train models that predict accurate segmentation masks for unseen test images.
+
+The test masks are hidden and used only for evaluation. Submissions are evaluated using the Intersection over Union (IoU) metric, which measures the overlap between predicted and ground truth segmentation masks. Higher scores indicate better segmentation performance.
+
+This competition is ideal for learners and practitioners looking to strengthen their skills in computer vision, semantic segmentation, and model generalization under realistic conditions. The competition is supported and sponsored by TensorFlow Prayagraj, encouraging hands-on learning with modern machine learning tools.Description
+Evaluation
+Evaluation
+Submissions in this competition are evaluated using the Intersection over Union (IoU) metric, which measures the overlap between the predicted segmentation mask and the corresponding ground truth mask. This metric is widely used for evaluating semantic segmentation tasks, as it provides a balanced measure of both false positives and false negatives.
+
+Intersection over Union (IoU)
+Although participants may train models that produce grayscale or continuous-valued segmentation outputs, all predictions are converted to binary masks before evaluation. The IoU score is computed on these binary masks.
+
+For each test image, the IoU score is calculated as the ratio between the area of overlap and the area of union of the predicted and ground truth binary masks:
+
+IoU = |Mpred ∩ Mgt|  /  |Mpred ∪ Mgt|
+
+where:
+
+Mpred is the binary segmentation mask obtained after thresholding the model’s predicted grayscale output.
+Mgt is the ground truth binary segmentation mask.
+Scoring Procedure
+For each submission, the evaluation system performs the following steps:
+
+The submitted CSV file is validated to ensure it follows the required format (image_id, encoded_pixels).
+The encoded_pixels column is decoded using Run-Length Encoding (RLE) to reconstruct the predicted binary segmentation mask.
+The reconstructed mask is compared against the hidden ground truth binary mask for the corresponding test image.
+The IoU score is computed for each test image individually.
+The final submission score is calculated as the mean IoU across all test images.
+Leaderboard
+The competition leaderboard is divided into two parts:
+
+Public Leaderboard: Displays scores computed on a subset of the test images and is updated immediately after each submission.
+Private Leaderboard: Displays scores computed on the remaining hidden test images and determines the final rankings after the competition ends.
+Participants are encouraged to focus on building models that generalize well rather than overfitting to the public leaderboard.
+
+Submission Validity
+Submissions that fail to meet the required format or contain invalid predictions may receive a score of 0. Common causes of invalid submissions include:
+
+Missing or duplicate image_id entries
+Incorrect or malformed RLE encodings
+Predictions that do not match the expected image dimensions
+Failure to properly convert predicted masks to binary form
+Tie-Breaking
+In the event of a tie on the private leaderboard, rankings will be determined based on the earliest submission achieving the tied score, unless otherwise specified by the competition organizers.
+
+Important Notes
+Test set ground truth masks are never shared with participants and are used solely for evaluation.
+Participants may train using grayscale masks, probability maps, or other continuous representations, but final submissions must be binary RLE-encoded masks.
+All final rankings are based exclusively on the private leaderboard.Dataset Description
+The TerraSeg Dataset is a curated collection of off-road terrain images designed for binary semantic segmentation tasks. The dataset focuses on unstructured, natural environments where traditional road boundaries are absent, making pixel-level understanding significantly more challenging than in urban scene datasets.
+
+Each image in the dataset is paired with a corresponding ground truth segmentation mask that identifies the foreground terrain class against the background. The dataset is suitable for training, validating, and benchmarking computer vision models for terrain understanding, robotics, and autonomous navigation research.
+
+Dataset Structure
+The dataset is organized into the following directory structure:
+
+train_images/
+train_masks/
+test_images/
+sample_submission.csv
+train_images/ contains RGB images used for training segmentation models.
+train_masks/ contains binary ground truth masks corresponding to the training images.
+test_images/ contains RGB images for evaluation. Ground truth masks for these images are intentionally withheld.
+sample_submission.csv provides the required submission format for competition participants.
+Image and Mask Format
+All input images are standard RGB images with three color channels. Segmentation masks are provided as single-channel grayscale images.
+
+Pixel value 255 indicates the foreground terrain class.
+Pixel value 0 indicates the background.
+This binary labeling scheme simplifies the segmentation task while still requiring precise boundary prediction and spatial understanding.
+
+Train and Test Split
+The dataset is divided into training and test sets. Training images are provided with corresponding ground truth masks and may be used freely for model training and validation. Test images are provided without masks and are used exclusively for evaluation through the competition leaderboard.
+
+Participants must not use test images or attempt to infer test labels during training. Any form of data leakage will result in disqualification.
+
+Submission Format
+Participants are required to submit predictions in CSV format. Each submission must include a row for every test image, where predicted masks are encoded using Run-Length Encoding (RLE).
+
+image_id,encoded_pixels
+0001057,1 5 10 3 ...
+Direct image uploads are not supported for submissions.
+
+Intended Use
+The TerraSeg Dataset is intended for educational and research purposes, including:
+
+Binary semantic segmentation benchmarking
+Off-road and unstructured environment perception
+Model generalization and robustness studies
+Computer vision learning and experimentation
+The dataset may not be used for commercial purposes unless explicitly permitted by the dataset license.
